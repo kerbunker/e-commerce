@@ -7,6 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all products
   Product.findAll({
+    // inclues their corresponding category and tag info
     include: [
       {
         model: Category,
@@ -18,22 +19,23 @@ router.get('/', (req, res) => {
       }
     ]
   })
+  // sends the found product data
     .then(dbProductData => res.json(dbProductData))
+    // catches any errors
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
-  // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   Product.findOne({
     where: {
       id: req.params.id
     },
+    // includes corresponding category and tag info
     include: [
       {
         model: Category,
@@ -46,12 +48,15 @@ router.get('/:id', (req, res) => {
     ]
   })
     .then(dbProductData => {
+      // returns a message if no product was found
       if (!dbProductData) {
         res.status(404).json({ message: 'No product found with that id' });
         return;
       }
+      // returns the selected data
       res.json(dbProductData);
     })
+    // catches any errors
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -104,6 +109,7 @@ router.put('/:id', (req, res) => {
   },
   {
     where: {
+      // finds the product with the given id
       id: req.params.id,
     },
   })
@@ -149,12 +155,15 @@ router.delete('/:id', (req, res) => {
     }
   })
     .then(dbProductData => {
+      // sends a message if no product was found
       if (!dbProductData) {
         res.status(404).json({ message: 'No product found with this id' });
         return;
       }
+      // returns the product data
       res.json(dbProductData);
     })
+    // catches any errors
     .catch(err => {
       console.log(err);
       res.status(500).json(err);

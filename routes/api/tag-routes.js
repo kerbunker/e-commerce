@@ -4,8 +4,7 @@ const { Tag, Product, ProductTag } = require('../../models');
 // The `/api/tags` endpoint
 
 router.get('/', (req, res) => {
-  // find all tags
-  // be sure to include its associated Product data
+  // finds all tags and returns them with their corresponding product info
   Tag.findAll({
     include: [
       {
@@ -22,12 +21,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
+  // find a single tag by its `id` 
   Tag.findOne({
     where: {
       id: req.params.id
     },
+    // includes the product info
     include: [
       {
         model: Product,
@@ -36,12 +35,15 @@ router.get('/:id', (req, res) => {
     ]
   })
     .then(dbTagData => {
+      // returns an error if no tag was found
       if (!dbTagData) {
         res.status(404).json({ message: 'No tag found with this id' });
         return;
       }
+      // returns the found tag info
       res.json(dbTagData);
     })
+    // returns an error if anything else went wrong
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -54,8 +56,10 @@ router.post('/', (req, res) => {
     tag_name: req.body.tag_name
   })
     .then(dbTagData => {
+      // returns a success message and the new tag info
       res.status(200).json(dbTagData);
     })
+    // catches any errors
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
@@ -73,12 +77,15 @@ router.put('/:id', (req, res) => {
     }
   })
     .then((dbTagData) => {
+      // returns an error if no tag was found
       if (!dbTagData) {
         res.status(404).json({ message: 'No tag found with this id' });
         return;
       }
+      // returns the tag info
       res.json(dbTagData);
     })
+    // catches any errors encountered
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -93,12 +100,15 @@ router.delete('/:id', (req, res) => {
     }
   })
     .then(dbTagData => {
+      // sends an error if no tag was found
       if (!dbTagData) {
         res.json(404).json({ message: 'No tag found with this id' });
         return;
       }
+      // returns the tag info
       res.json(dbTagData);
     })
+    // catches any errors
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
