@@ -10,7 +10,7 @@ To install the application, the files need to be downloaded from the github repo
 
 ## Usage
 
-After the installation, the command "npm run seed" can be used to seed the merch data and then the command "npm start" can be run to start the server. The data can then be accessed through http://localhost:3001.
+After the installation, connect to mysql and run the command "SOURCE db/schema.sql;" to create the data base, then the command "npm run seed" can be used to seed the merch data and the command "npm start" can be run to start the server. The data can then be accessed through http://localhost:3001. To see these commands used watch this video: https://watch.screencastify.com/v/s8hsDES7AcrnoI1x2I6u.
 
 To see how the different api routes can be utilized, here is a walkthrough using insomnia: https://watch.screencastify.com/v/UEGjmfBeIpMQX72CdfQN
 
